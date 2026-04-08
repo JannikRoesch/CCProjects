@@ -49,7 +49,15 @@
       "Bash(git remote:*)",
       "Bash(git branch:*)",
       "Bash(git push:*)",
-      "Bash(bd export:*)"
+      "Bash(bd export:*)",
+      "mcp__beads__context",
+      "Bash(bd ready:*)",
+      "Bash(python3 -c \"import json,sys; issues=json.load\\(sys.stdin\\)['result']; [print\\(f\\\\\"{i['id']} P{i['priority']} [{i['issue_type']}] {i['title']}\\\\\"\\) for i in sorted\\(issues, key=lambda x: x['priority']\\)]\")",
+      "Bash(bd update:*)",
+      "Bash(printf '{\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"rm -rf /\"}}\\\\n')",
+      "Bash(echo \"exit=$?\")",
+      "Bash(HOOK_INPUT='{\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"git status\"}}' node .claude/hooks/pre-tool-use.js)",
+      "Bash(HOOK_INPUT='{\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"git push --force origin main\"}}' node .claude/hooks/pre-tool-use.js)"
     ]
   },
   "enableAllProjectMcpServers": true,
