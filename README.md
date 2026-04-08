@@ -3,7 +3,7 @@
 A multi-project workspace for AI-assisted development, optimized for Claude Code with Beads issue tracking, workspace automation scripts, and a custom plugin ecosystem.
 
 <!-- STATS_START -->
-Projects: 2 | Open issues: 3 | Last updated: 2026-04-08
+Projects: 0 | Open issues: 13 | Closed: 40 | Updated: 2026-04-08
 <!-- STATS_END -->
 
 ## What's Inside
