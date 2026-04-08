@@ -2,6 +2,13 @@
   "mcpServers": {
     "beads": {
       "command": "beads-mcp"
+    },
+    "ccplugin": {
+      "command": "node",
+      "args": ["C:/Users/Admin/ccprojects/projects/CCPlugin/dist/mcp/server.cjs"],
+      "env": {
+        "CCPLUGIN_ROOT": "C:/Users/Admin/ccprojects"
+      }
     }
   }
 }
