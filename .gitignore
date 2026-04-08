@@ -7,6 +7,10 @@
 # Individual project repos (each is its own git repo)
 projects/*/
 
+# Claude Code session files
+.claude/scheduled_tasks.lock
+.claude/settings.local.json
+
 # OS
 .DS_Store
 Thumbs.db
