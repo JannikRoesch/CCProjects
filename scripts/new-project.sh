@@ -161,7 +161,14 @@ EOF
 
 # ── Initialize beads ──────────────────────────────────────────────────────────
 echo "Initializing beads (prefix: $BD_PREFIX)..."
-bd init --prefix="$BD_PREFIX" --quiet 2>/dev/null || bd init --prefix="$BD_PREFIX"
+
+# Pre-seed local config to prevent inheriting shared-server mode from parent workspace.
+# On Windows (no CGO), embedded Dolt is unavailable — server mode is required.
+mkdir -p .beads
+echo "dolt.shared-server: false" > .beads/config.yaml
+
+bd init --prefix="$BD_PREFIX" --server --non-interactive 2>/dev/null \
+  || bd init --prefix="$BD_PREFIX" --non-interactive
 
 # ── Initial commit ────────────────────────────────────────────────────────────
 git add -A
