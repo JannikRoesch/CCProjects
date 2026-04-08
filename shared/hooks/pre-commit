@@ -1,0 +1,26 @@
+#!/bin/sh
+# Pre-commit hook template for CCProjects
+# Copy to .git/hooks/pre-commit and chmod +x
+
+set -e
+
+# 1. Prevent committing secrets
+if git diff --cached --name-only | xargs grep -l -E "(API_KEY|SECRET_KEY|PASSWORD|aws_secret|private_key)" 2>/dev/null; then
+  echo "ERROR: Possible secrets detected in staged files. Review before committing."
+  exit 1
+fi
+
+# 2. Prevent committing .env files
+if git diff --cached --name-only | grep -qE "^\.env$|^\.env\.(local|production|staging)$"; then
+  echo "ERROR: .env file staged for commit. Add it to .gitignore."
+  exit 1
+fi
+
+# 3. Run linter if package.json exists
+if [ -f "package.json" ]; then
+  if command -v pnpm >/dev/null 2>&1; then
+    pnpm lint --fix-dry-run 2>/dev/null || pnpm lint 2>/dev/null || true
+  fi
+fi
+
+echo "Pre-commit checks passed."

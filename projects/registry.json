@@ -1,0 +1,30 @@
+{
+  "$schema": "../shared/registry.schema.json",
+  "workspace": "CCProjects",
+  "owner": "JannikRoesch",
+  "updated": "2026-04-08",
+  "projects": [
+    {
+      "name": "BeadsUI",
+      "path": "projects/BeadsUI",
+      "description": "Feature-rich WebUI for the Beads issue tracker",
+      "type": "fullstack",
+      "stack": ["react", "hono", "typescript", "tailwind", "pnpm"],
+      "github": "https://github.com/JannikRoesch/BeadsUI",
+      "status": "active",
+      "beads_prefix": "beadsu",
+      "created": "2026-04-08"
+    },
+    {
+      "name": "CCPlugin",
+      "path": "projects/CCPlugin",
+      "description": "Beads-integrated workspace management plugin for Claude Code",
+      "type": "plugin",
+      "stack": ["typescript", "node", "mcp", "pnpm"],
+      "github": "https://github.com/JannikRoesch/CCPlugin",
+      "status": "active",
+      "beads_prefix": "ccplugin",
+      "created": "2026-04-08"
+    }
+  ]
+}

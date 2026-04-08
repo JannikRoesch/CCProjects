@@ -1,0 +1,10 @@
+# CODEOWNERS for CCProjects
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything
+* @JannikRoesch
+
+# Infrastructure files
+.claude/ @JannikRoesch
+scripts/ @JannikRoesch
+.beads/ @JannikRoesch

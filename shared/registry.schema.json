@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CCProjects Registry",
+  "type": "object",
+  "required": ["workspace", "owner", "projects"],
+  "properties": {
+    "workspace": { "type": "string" },
+    "owner": { "type": "string" },
+    "updated": { "type": "string", "format": "date" },
+    "projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "path", "description", "type", "status"],
+        "properties": {
+          "name": { "type": "string" },
+          "path": { "type": "string" },
+          "description": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": ["web-app", "api", "cli", "python", "fullstack", "blank", "plugin", "library"]
+          },
+          "stack": { "type": "array", "items": { "type": "string" } },
+          "github": { "type": "string", "format": "uri" },
+          "status": {
+            "type": "string",
+            "enum": ["active", "paused", "archived", "planning"]
+          },
+          "beads_prefix": { "type": "string" },
+          "created": { "type": "string", "format": "date" }
+        }
+      }
+    }
+  }
+}

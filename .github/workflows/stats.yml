@@ -1,0 +1,70 @@
+name: Update README Stats
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # Run daily at 06:00 UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-stats:
+    name: Update Workspace Stats
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Count projects
+        id: stats
+        run: |
+          PROJECT_COUNT=$(find projects -maxdepth 1 -mindepth 1 -type d | wc -l | tr -d ' ')
+          echo "project_count=$PROJECT_COUNT" >> $GITHUB_OUTPUT
+
+          # Count beads issues from snapshot
+          if [ -f ".beads/issues.jsonl" ]; then
+            OPEN_ISSUES=$(grep -c '"status":"open"' .beads/issues.jsonl 2>/dev/null || echo "0")
+            CLOSED_ISSUES=$(grep -c '"status":"closed"' .beads/issues.jsonl 2>/dev/null || echo "0")
+          else
+            OPEN_ISSUES=0
+            CLOSED_ISSUES=0
+          fi
+          echo "open_issues=$OPEN_ISSUES" >> $GITHUB_OUTPUT
+          echo "closed_issues=$CLOSED_ISSUES" >> $GITHUB_OUTPUT
+
+          LAST_UPDATED=$(date -u '+%Y-%m-%d')
+          echo "last_updated=$LAST_UPDATED" >> $GITHUB_OUTPUT
+
+      - name: Update README badges section
+        run: |
+          # Update the stats section in README.md if it has the marker
+          if grep -q '<!-- STATS_START -->' README.md 2>/dev/null; then
+            STATS_BLOCK="<!-- STATS_START -->
+          ![Projects](${{ steps.stats.outputs.project_count }} Projects)
+          ![Open Issues](${{ steps.stats.outputs.open_issues }} Open)
+          ![Closed Issues](${{ steps.stats.outputs.closed_issues }} Closed)
+          Last updated: ${{ steps.stats.outputs.last_updated }}
+          <!-- STATS_END -->"
+            # Use python to do the replacement safely
+            python3 -c "
+          import re, sys
+          content = open('README.md').read()
+          new_block = '''<!-- STATS_START -->
+          Projects: ${{ steps.stats.outputs.project_count }} | Open issues: ${{ steps.stats.outputs.open_issues }} | Closed: ${{ steps.stats.outputs.closed_issues }} | Updated: ${{ steps.stats.outputs.last_updated }}
+          <!-- STATS_END -->'''
+          result = re.sub(r'<!-- STATS_START -->.*?<!-- STATS_END -->', new_block, content, flags=re.DOTALL)
+          open('README.md', 'w').write(result)
+          "
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add README.md
+            git diff --staged --quiet || git commit -m "chore: update workspace stats [skip ci]"
+            git push
+          else
+            echo "No STATS_START marker in README.md — skipping update."
+          fi

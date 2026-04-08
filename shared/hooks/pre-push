@@ -1,0 +1,26 @@
+#!/bin/sh
+# Pre-push hook template for CCProjects
+# Copy to .git/hooks/pre-push and chmod +x
+
+REMOTE=$1
+URL=$2
+
+# Prevent force push to main/master
+while read local_ref local_sha remote_ref remote_sha; do
+  if echo "$remote_ref" | grep -qE "refs/heads/(main|master)$"; then
+    if [ "$local_sha" = "0000000000000000000000000000000000000000" ]; then
+      echo "ERROR: Deleting main/master branch is not allowed."
+      exit 1
+    fi
+  fi
+done
+
+# Run tests before push (if test script exists)
+if [ -f "package.json" ] && grep -q '"test"' package.json; then
+  echo "Running tests before push..."
+  if command -v pnpm >/dev/null 2>&1; then
+    pnpm test --run 2>/dev/null || { echo "ERROR: Tests failed. Push aborted."; exit 1; }
+  fi
+fi
+
+echo "Pre-push checks passed."

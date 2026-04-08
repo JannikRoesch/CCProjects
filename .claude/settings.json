@@ -54,6 +54,17 @@
           }
         ]
       }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node C:/Users/Admin/ccprojects/.claude/hooks/notification.js"
+          }
+        ]
+      }
     ]
   },
   "permissions": {
