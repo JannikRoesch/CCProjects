@@ -84,6 +84,8 @@ check_project "$WORKSPACE" "root" || issues_found=$((issues_found + $?))
 
 for proj_dir in "$WORKSPACE/projects"/*/; do
   [ -d "$proj_dir" ] || continue
+  # Skip directories without a git repo (e.g. partially deleted test projects)
+  [ -d "$proj_dir/.git" ] || continue
   proj_name="$(basename "$proj_dir")"
   check_project "$proj_dir" "$proj_name" || issues_found=$((issues_found + $?))
 done
