@@ -1,0 +1,12 @@
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
+
+# Individual project repos (each is its own git repo)
+projects/*/
+
+# OS
+.DS_Store
+Thumbs.db
